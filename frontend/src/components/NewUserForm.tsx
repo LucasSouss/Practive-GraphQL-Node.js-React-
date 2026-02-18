@@ -27,7 +27,9 @@ type FormData = {
 
 export function NewUserForm() {
   const [createUser, { loading, error }] = useMutation(CREATE_USER, {
-    refetchQueries: [GET_USER], // Atualiza a lista da imagem 412441
+    refetchQueries: [
+    { query: GET_USER } // Atualiza a lista sempre que esta mutação rodar com sucesso
+  ], // Atualiza a lista da imagem 412441
   });
   
   const { register, handleSubmit, reset } = useForm<FormData>();
@@ -39,8 +41,8 @@ export function NewUserForm() {
       const response = await createUser({
         variables: { name: data.name }
       });
-
       console.log(response.data); // Log da imagem 412458
+      
       reset(); 
     } catch (e) {
       console.error(e);
